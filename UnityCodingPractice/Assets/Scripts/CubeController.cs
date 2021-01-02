@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
+    ///TODO: Input Buffer, Box Controller
+
     [SerializeField] float speed = 90.0f;
+    [SerializeField] bool useBuffering = false;
 
     private Transform parent = null;
     private Vector3[] directions = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
     private Quaternion qTo;
     private bool rotating;
+    private bool buffered = false;
+    private Vector3 bufferedDirection = Vector3.zero;
 
     private void Start()
     {
@@ -18,27 +23,50 @@ public class CubeController : MonoBehaviour
 
     private void Update()
     {
-        if(rotating)
+        var inputDirection = DirectionFromInput();
+
+        if (rotating)
         {
+            if(inputDirection != Vector3.zero)
+            {
+                bufferedDirection = inputDirection;
+                buffered = true;
+            }
+
             return;
         }
-
-        if(Input.GetKeyDown(KeyCode.A))
+        
+        if(inputDirection != Vector3.zero)
         {
-            FlopTo(Vector3.left);
+            FlopTo(inputDirection);
         }
-        else if(Input.GetKeyDown(KeyCode.D))
+        else if(buffered)
         {
-            FlopTo(Vector3.right);
+            buffered = false;
+            FlopTo(bufferedDirection);
+        }
+    }
+
+
+    private Vector3 DirectionFromInput()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            return Vector3.left;
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            return Vector3.right;
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            FlopTo(Vector3.forward);
+            return Vector3.forward;
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            FlopTo(Vector3.back);
+            return Vector3.back;
         }
+        else return Vector3.zero;
     }
 
     private void FlopTo(Vector3 direction)
