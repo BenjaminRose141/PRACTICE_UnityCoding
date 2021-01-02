@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    ///TODO: Input Buffer, Box Controller
-
     [SerializeField] float speed = 90.0f;
     [SerializeField] bool useBuffering = false;
 
@@ -15,6 +13,7 @@ public class CubeController : MonoBehaviour
     private bool rotating;
     private bool buffered = false;
     private Vector3 bufferedDirection = Vector3.zero;
+
 
     private void Start()
     {
