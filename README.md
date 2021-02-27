@@ -11,6 +11,9 @@ This project uses Unity 2020.2.6f1.
 
 tba
 
+## Credits
+Catlike Coding <https://catlikecoding.com/>
+
 ## License
 
 All rights reserved.
